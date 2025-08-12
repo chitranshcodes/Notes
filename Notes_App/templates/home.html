@@ -6,19 +6,21 @@
         <div class="success-message">{{ message }}</div>
     {% endfor %}
 {% endif %} 
-
-<h2>Hey Guys!</h2>
-<h1>Namaste</h1>
-<h2>You can save your personalised notes!</h2>
-<h1>☺️</h1> 
-
-
-{% for note in notes %}
+{% if user.is_authenticated %}
+<h1>YOUR NOTES HERE!</h1>
+{% for note in user.notes.all %}
 <div style="background-color: grey;">
 <h1>{{note.title}}</h1>
 <h3>{{note.date}}</h3>
 <p>{{note.content}}</p>
 </div>
 {% endfor %}
+...
+{% else %}
+<h2>Hey Guys!</h2>
+<h1>Namaste</h1>
+<h2>You can save your personalised notes!</h2>
+<h1>☺️</h1> 
+{%endif%}
 
 {% endblock %}
