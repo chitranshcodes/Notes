@@ -34,7 +34,7 @@
     font-weight: 500;
     font-size: 0.9rem;
   }
-  input[type="email"],
+  input[type="text"],
   input[type="password"] {
     width: 100%;
     padding: 10px 12px;
@@ -46,11 +46,11 @@
     font-size: 1rem;
     box-sizing: border-box;
   }
-  input[type="email"]::placeholder,
+  input[type="text"]::placeholder,
   input[type="password"]::placeholder {
     color: #888;
   }
-  input[type="email"]:focus,
+  input[type="text"]:focus,
   input[type="password"]:focus {
     outline: none;
     background: #3a3a3a;
@@ -83,6 +83,16 @@
   .register-link a:hover {
     text-decoration: underline;
   }
+   .error {
+  color: #ff6b6b;      /* Soft red for errors */
+  background-color: #2a2a2a; /* Dark gray background */
+  border: 1px solid #ff4c4c;
+  padding: 6px 10px;
+  margin-top: 4px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+}
 </style>
 </head>
 <body>
@@ -90,11 +100,22 @@
     <h2>Login</h2>
     <form method="POST" action="{% url 'notes:login' %}">
       {% csrf_token %}
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" placeholder="you@example.com" required />
 
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password" placeholder="Enter your password" required />
+      {{ form.username.label_tag }}
+      {{ form.username }}
+      {% if form.username.errors %}
+        <div class="error">{{ form.username.errors }}</div>
+      {% endif %}
+
+       {{ form.password.label_tag }}
+       {{ form.password }}
+      {% if form.password.errors %}
+        <div class="error">{{ form.password.errors }}</div>
+      {% endif %}
+
+      {% if form.non_field_errors %}
+        <div class="error">{{ form.non_field_errors }}</div>
+      {% endif %}
 
       <button type="submit">Login</button>
     </form>

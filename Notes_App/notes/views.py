@@ -8,7 +8,7 @@ def home(request):
     notes=Notes.objects.all()
     return render(request, 'home.html', {'notes':notes})
 
-def login(request):
+def Login(request):
     if request.method=='POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -17,15 +17,16 @@ def login(request):
             user= authenticate(username=username, password=password)
             if user:
                 login(request, user)
+                return redirect('notes:home')
             else:
                 if User.objects.filter(username=username).exists():
                     form.add_error('password', 'Wrong Password')
                 else:
                     form.add_error('username', "user doesn't exist.")
-            
+
     else:
         form = LoginForm()
-    return render(request, 'login.html')
+    return render(request, 'login.html', {'form':form})
 
 def register(request):
     if request.method=='POST':
