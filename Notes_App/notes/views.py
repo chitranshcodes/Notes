@@ -43,7 +43,7 @@ def register(request):
                 form.add_error('email', 'Email already registered')
             else:
                 User.objects.create_user(username=username,email=email,password=password)
-            
+                messages.success(request, "Registered Successfully🤩 Login now!")
                 return redirect('notes:login')
     else:
         form=RegisterForm()
