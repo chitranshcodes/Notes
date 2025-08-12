@@ -1,6 +1,5 @@
 from django import forms
 from django.core.validators import EmailValidator, MinLengthValidator, RegexValidator
-
 class RegisterForm(forms.Form):
     username= forms.CharField(label="Username", validators=[
         MinLengthValidator(4,message="At least 4 letters required"),
@@ -18,3 +17,10 @@ class RegisterForm(forms.Form):
         if p1!=p2:
             raise forms.ValidationError("Passwords do not match!")
         return cleaned_data
+    
+class LoginForm(forms.Form):
+        username= forms.CharField(label="Username", validators=[
+        MinLengthValidator(4,message="At least 4 letters required"),
+        RegexValidator(r'^[a-zA-Z0-9_]+$', message="Only letters, numbers, and underscores allowed")
+        ])
+        password= forms.CharField(label="Password", widget=forms.PasswordInput,  validators=[MinLengthValidator(8, message="Password must be at least 8 characters")])
