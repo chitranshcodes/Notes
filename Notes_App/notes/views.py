@@ -3,6 +3,7 @@ from .models import Notes
 from .forms import RegisterForm, LoginForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
+from django.contrib import messages
 
 def home(request):
     notes=Notes.objects.all()
@@ -17,6 +18,7 @@ def Login(request):
             user= authenticate(username=username, password=password)
             if user:
                 login(request, user)
+                messages.success(request, "Logged In Successfully!")
                 return redirect('notes:home')
             else:
                 if User.objects.filter(username=username).exists():

@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
 {% block title %}WELCOME{% endblock %}
 {% block content %}
- 
+{% if messages %}
+    {% for message in messages %}
+        <div class="success-message">{{ message }}</div>
+    {% endfor %}
+{% endif %} 
+
 <h2>Hey Guys!</h2>
 <h1>Namaste</h1>
 <h2>You can save your personalised notes!</h2>
