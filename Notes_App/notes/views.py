@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from .models import Notes
-from .forms import RegisterForm, LoginForm
+from .forms import RegisterForm, LoginForm, NoteForm
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+
 
 def home(request):
     notes=Notes.objects.all()
@@ -52,3 +54,29 @@ def register(request):
 
 def about(request):
     return render(request, 'about.html')
+
+@login_required
+def add_note(request):
+    if request.method=='POST':
+        form=NoteForm(request.POST)
+        current_user=request.user
+        if form.is_valid():
+            title=form.cleaned_data['title']
+            content=form.cleaned_data['content']
+            Notes.objects.create(title=title, content=content, user=current_user)
+            messages.success(request, 'Note created!')
+            return redirect('notes:home')
+    else:
+        form=NoteForm()
+    return render(request, 'add_note.html', {'form':form})
+
+
+@login_required
+def update(request, note_id):
+    note=Notes.objects.filter(id=note_id).first()
+    return render(request, 'update.html', {'note':note})
+
+@login_required
+def logout(request):
+    logout(request)
+    return redirect('notes:login')

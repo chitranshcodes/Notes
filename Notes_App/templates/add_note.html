@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Note</title>
+    <style>
+        button {
+  background-color: #4CAF50; /* Green */
+  color: white;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+    </style>
+</head>
+<body>
+    <form method="POST" action="{% url 'notes:add_note' %}">
+      {% csrf_token %}
+<div>
+      {{ form.title.label_tag }}
+      {{ form.title }}
+      {% if form.title.errors %}
+        <div class="error">{{ form.title.errors }}</div>
+      {% endif %}
+</div>
+<div>
+       {{ form.content.label_tag }}
+       {{ form.content }}
+</div>
+      <button type="submit">Add Note</button>
+    </form>
+</body>
+</html>

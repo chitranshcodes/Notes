@@ -11,12 +11,19 @@
 <body>
 
     <!-- Navbar -->
+     {%if user.is_authenticated%}
+        <nav>
+        <a href="{% url 'notes:logout' %}">Logout</a>
+        <a href="{% url 'notes:add_note' %}">Add Note</a>
+        <a href="{% url 'notes:about' %}">About</a>
+    </nav>
+     {% else %}
     <nav>
         <a href="{% url 'notes:login' %}">Login</a>
         <a href="{% url 'notes:register' %}">Register</a>
         <a href="{% url 'notes:about' %}">About</a>
     </nav>
-
+    {%endif%}
     <!-- Main Content -->
     <main>
         <div class="content-box">

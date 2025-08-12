@@ -58,7 +58,7 @@
 {% if user.is_authenticated %}
 <h1>YOUR NOTES HERE!</h1>
 {% for note in user.notes.all %}
-<a href="#" class="note-card">
+<a href="{% url 'notes:update' note.id  %}" class="note-card">
   <div class="note-title">{{ note.title }}</div>
   <hr class="divider" />
   <div class="note-content">{{ note.content|truncatewords:20 }}</div>
