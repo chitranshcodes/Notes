@@ -63,7 +63,7 @@
   <hr class="divider" />
   <div class="note-content">{{ note.content|truncatewords:20 }}</div>
   <hr class="divider" />
-  <div class="note-date">{{ note.date|date:"M d, Y H:i" }}</div>
+  <div class="note-date">last updated {{ note.date|date:"M d, Y H:i" }}</div>
 </a>
 {% endfor %}
 ...

@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-
+from django.utils import timezone
 
 def home(request):
     notes=Notes.objects.all()
@@ -74,7 +74,19 @@ def add_note(request):
 @login_required
 def update(request, note_id):
     note=Notes.objects.filter(id=note_id).first()
-    return render(request, 'update.html', {'note':note})
+    if request.method=='POST':
+        form=NoteForm(request.POST)
+        if form.is_valid():
+            note.title=form.cleaned_data['title']
+            note.content=form.cleaned_data['content']
+            note.date=timezone.now()
+            note.save()
+            messages.success(request, f'updated the note! {note.title}')
+            return redirect('notes:home')
+    else:
+        form=NoteForm(initial={'title':note.title, 'content':note.content})
+
+    return render(request, 'update.html', {'form':form, 'note':note})
 
 @login_required
 def logout(request):
