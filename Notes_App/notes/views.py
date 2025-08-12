@@ -89,6 +89,7 @@ def update(request, note_id):
     return render(request, 'update.html', {'form':form, 'note':note})
 
 @login_required
-def logout(request):
+def Logout(request):
     logout(request)
+    messages.success(request, 'Fir Milenge! ☺️')
     return redirect('notes:login')
