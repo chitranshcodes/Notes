@@ -1,14 +1,30 @@
 from django.shortcuts import render, redirect
 from .models import Notes
-from .forms import RegisterForm
+from .forms import RegisterForm, LoginForm
 from django.contrib.auth.models import User
-
+from django.contrib.auth import authenticate, login
 
 def home(request):
     notes=Notes.objects.all()
     return render(request, 'home.html', {'notes':notes})
 
 def login(request):
+    if request.method=='POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username=form.cleaned_data['username']
+            password=form.cleaned_data['password']
+            user= authenticate(username=username, password=password)
+            if user:
+                login(request, user)
+            else:
+                if User.objects.filter(username=username).exists():
+                    form.add_error('password', 'Wrong Password')
+                else:
+                    form.add_error('username', "user doesn't exist.")
+            
+    else:
+        form = LoginForm()
     return render(request, 'login.html')
 
 def register(request):
